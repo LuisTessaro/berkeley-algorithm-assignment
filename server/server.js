@@ -26,8 +26,14 @@ function sendCorrections() {
   Object.keys(clients).map((key) => {
     const client = clients[key]
     if (client !== -1) {
-      console.log('Sending correction to client')
-      io.to(client.id).emit('setNewTime', client.correction)
+      if (client.correction > 0) {
+        console.log('Sending correction to all clients')
+        io.to(client.id).emit('setNewTime',
+          {
+            correction: client.correction,
+            id: client.id,
+          })
+      }
     }
   })
 }
