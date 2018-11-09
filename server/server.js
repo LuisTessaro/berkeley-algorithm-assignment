@@ -1,45 +1,41 @@
-const app = require('express')()
-const server = require('http').Server(app)
-const io = require('socket.io')(server)
+var app = require('express')()
+var server = require('http').Server(app)
+var io = require('socket.io')(server)
 
 const ip = process.argv[2] || 'http://127.0.0.1'
 const port = process.argv[3] || 8080
-let serverTime = process.argv[4] || 185
+let serverTime =  parseInt(process.argv[4], 10) || '180'
 const d = process.argv[5] || 60
 const slavesfile = process.argv[6] || 'slaves.txt'
 const logFile = process.argv[7] || 'logs/clientlog.txt'
 
-const clients = {}
+let clients = {}
 
 server.listen(port, () => {
   console.log('Server is listening on port: ' + port)
+  console.log('Starting time is: ' + serverTime)
 });
 
-setInterval(() => {
+setInterval(function () {
   setDifferences()
-
-  const medium = mediumTime()
-
+  let medium = mediumTime()
   setCorrections(medium)
   sendCorrections()
-
   serverTime += medium
-
   io.emit('getTime')
-  console.log(medium)
+  console.log('Medium of diferences: ' + medium)
 }, 10000);
 
 function sendCorrections() {
   Object.keys(clients).map((key) => {
     const client = clients[key]
     if (client !== -1) {
-      if (client.correction > 0) {
-        console.log('Sending correction to all clients')
-        io.to(client.id).emit('setNewTime',
-          {
-            correction: client.correction,
-            id: client.id,
-          })
+      if (client.correction !== 0) {
+        console.log('Sending correction to client')
+        io.to(client.id).emit('setNewTime', {
+          correction: client.correction,
+          id : client.id,
+        })
       }
     }
   })
@@ -95,7 +91,7 @@ io.on('connection', function (socket) {
         dif: 0,
         correction: 0,
       }
-      console.log('Client does not exist in colection yet got: ', data)
+      console.log('Client does not exist in collection yet got: ', data)
     } else {
       clients[socket.id].time = data
     }

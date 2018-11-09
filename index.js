@@ -13,7 +13,7 @@ if (opt == '-m') {
   contents = contents.split('\n')
   for(let i in contents){
     let aux = contents[i].split(' ')
-    //cp.exec(`start cmd /k node client/client.js ${aux[0]} ${aux[1]} ${aux[2]}`);
+    cp.exec(`start cmd /k node client/client.js ${aux[0]} ${aux[1]} ${aux[2]}`);
   }
   cp.exec(`start cmd /k node server/server.js ${ip} ${port} ${time} ${d} ${slavesfile} ${logFile}`);
 } else if (opt == '-s') {
