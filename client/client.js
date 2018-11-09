@@ -13,11 +13,16 @@ socket.on('setNewTime', function (data) {
 })
 
 function fixTime(correction, id) {
+  let timeB4 = time
   console.log('Fixing time with: ' + correction)
   time += correction
-  var stream = fs.createWriteStream("logs/clientlog.txt");
-  stream.once('open', function (fd) {
-    stream.write('Client '+ id + ' time: ' + time + '\n');
-    stream.end();
-  })
+  var fs = require('fs');
+  let text =
+    'Client ' + id + ' before sync time: ' + timeB4 + '\n' +
+    'Client ' + id + ' after sync time: ' + time + '\n'
+
+  fs.appendFile('logs/clientlog.txt', text, function (err) {
+    if (err) throw err;
+    console.log('Updated!');
+  });
 }
