@@ -2,8 +2,12 @@ const app = require('express')()
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
 
-const port = 8080
-let serverTime = 185
+const ip = process.argv[2] || 'http://127.0.0.1'
+const port = process.argv[3] || 8080
+let serverTime = process.argv[4] || 185
+const d = process.argv[5] || 60
+const slavesfile = process.argv[6] || 'slaves.txt'
+const logFile = process.argv[7] || 'logs/clientlog.txt'
 
 const clients = {}
 

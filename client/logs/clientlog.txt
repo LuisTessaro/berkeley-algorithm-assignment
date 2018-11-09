@@ -1,6 +1,0 @@
-Client E1dMVyrUWrrgTqz3AAAA before sync time: 180
-Client E1dMVyrUWrrgTqz3AAAA after sync time: 181.66666666666666
-Client fREIb6NidFBen8-BAAAC before sync time: 180
-Client fREIb6NidFBen8-BAAAC after sync time: 181.66666666666666
-Client qlJ3nGMVwjspenpiAAAA before sync time: 180
-Client qlJ3nGMVwjspenpiAAAA after sync time: 182.5

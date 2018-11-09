@@ -1,8 +1,12 @@
-var socket = require('socket.io-client')('http://127.0.0.1:8080')
 const fs = require('fs');
 
+const ip = process.argv[2] || '127.0.0.1'
+const port = process.argv[3]  || '8080'
+let time = parseInt(process.argv[4], 10) || '180'
 
-let time = parseInt(process.argv[2], 10)
+var socket = require('socket.io-client')(`http://${ip}:${port}'`)
+
+console.log('Starting with time: ' + time)
 
 socket.on('getTime', function () {
   console.log('Sending time: ' + time)
