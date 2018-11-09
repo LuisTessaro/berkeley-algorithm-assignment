@@ -1,23 +1,26 @@
-var app = require('express')()
-var server = require('http').Server(app)
-var io = require('socket.io')(server)
+const app = require('express')()
+const server = require('http').Server(app)
+const io = require('socket.io')(server)
 
-let port = 8080
+const port = 8080
+const serverTime = 185
 
-let serverTime = 185
-
-let clients = {}
+const clients = {}
 
 server.listen(port, () => {
   console.log('Server is listening on port: ' + port)
 });
 
-setInterval(function () {
+setInterval(() => {
   setDifferences()
-  let medium = mediumTime()
+
+  const medium = mediumTime()
+
   setCorrections(medium)
   sendCorrections()
+
   serverTime += medium
+
   io.emit('getTime')
   console.log(medium)
 }, 10000);
