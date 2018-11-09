@@ -3,7 +3,7 @@ const server = require('http').Server(app)
 const io = require('socket.io')(server)
 
 const port = 8080
-const serverTime = 185
+let serverTime = 185
 
 const clients = {}
 
