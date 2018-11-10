@@ -2,17 +2,18 @@ var app = require('express')()
 var server = require('http').Server(app)
 var io = require('socket.io')(server)
 
-const ip = process.argv[2] || 'http://127.0.0.1'
-const port = process.argv[3] || 8080
-let serverTime =  parseInt(process.argv[4], 10) || '180'
+const ip = process.argv[2] || '127.0.0.1'
+const port = process.argv[3] || '8080'
+let serverTime = parseInt(process.argv[4], 10) || '180'
 const d = process.argv[5] || 60
 const slavesfile = process.argv[6] || 'slaves.txt'
 const logFile = process.argv[7] || 'logs/clientlog.txt'
 
 let clients = {}
 
-server.listen(port, () => {
-  console.log('Server is listening on port: ' + port)
+let serverPort = port || '8080'
+server.listen(serverPort, () => {
+  console.log('Server is listening on ip: ' + ip + ' and on port: ' + port)
   console.log('Starting time is: ' + serverTime)
 });
 
@@ -21,10 +22,29 @@ setInterval(function () {
   let medium = mediumTime()
   setCorrections(medium)
   sendCorrections()
-  serverTime += medium
+  fixServerTime(medium)
   io.emit('getTime')
   console.log('Medium of diferences: ' + medium)
 }, 10000);
+
+function fixServerTime(medium) {
+  let timeB4 = serverTime
+  console.log('Fixing server with: ' + medium)
+  serverTime += medium
+  var fs = require('fs')
+  let text = ''
+  if (medium != 0) {
+    text += 'Master before sync time: ' + timeB4 + '\n' +
+      'Master was changed by: ' + medium + ' minutes\n' +
+      'Master after sync time: ' + serverTime + '\n'
+  } else {
+    text += 'No changes ocurred in this cycle current time: ' + serverTime + '\n'
+  }
+  fs.appendFile(logFile, text, function (err) {
+    if (err) throw err;
+    console.log('Loged!')
+  })
+}
 
 function sendCorrections() {
   Object.keys(clients).map((key) => {
@@ -34,7 +54,7 @@ function sendCorrections() {
         console.log('Sending correction to client')
         io.to(client.id).emit('setNewTime', {
           correction: client.correction,
-          id : client.id,
+          id: client.id,
         })
       }
     }
@@ -80,7 +100,7 @@ app.get('/', function (req, res) {
 })
 
 io.on('connection', function (socket) {
-  console.log('Client' + socket.id + ' connected')
+  console.log('Client ' + socket.id + ' connected')
   socket.emit('getTime')
 
   socket.on('clientTime', function (data) {

@@ -1,9 +1,9 @@
-127.0.0.1 8080 180
-127.0.0.1 8080 175
-127.0.0.1 8080 180
-127.0.0.1 8080 170
-127.0.0.1 8080 190
-127.0.0.1 8080 80
-127.0.0.1 8080 180
-127.0.0.1 8080 150
-127.0.0.1 8080 130
+127.0.0.1 8080 180 logs/clientlog.txt
+127.0.0.1 8080 175 logs/clientlog.txt
+127.0.0.1 8080 180 logs/clientlog.txt
+127.0.0.1 8080 170 logs/clientlog.txt
+127.0.0.1 8080 190 logs/clientlog.txt
+127.0.0.1 8080 80 logs/clientlog.txt
+127.0.0.1 8080 180 logs/clientlog.txt
+127.0.0.1 8080 150 logs/clientlog.txt
+127.0.0.1 8080 130 logs/clientlog.txt
